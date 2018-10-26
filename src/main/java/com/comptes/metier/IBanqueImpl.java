@@ -5,6 +5,8 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.comptes.dao.CompteRepository;
 import com.comptes.dao.OperationRepository;
@@ -13,7 +15,8 @@ import com.comptes.entities.CompteCourant;
 import com.comptes.entities.Operation;
 import com.comptes.entities.Retrait;
 import com.comptes.entities.Versement;
-
+@Service
+@Transactional
 public class IBanqueImpl implements IBanque {
 	@Autowired
 	private CompteRepository compteRepository;
@@ -22,7 +25,7 @@ public class IBanqueImpl implements IBanque {
 
 	@Override
 	public Compte consulterCompte(String codeCompte) {
-		Compte c = compteRepository.findById(codeCompte).get();
+		Compte c = compteRepository.findOne(codeCompte);
 		if (c == null)
 			throw new RuntimeException("Compte inexistant !!!");
 		return c;
